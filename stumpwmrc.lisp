@@ -14,12 +14,32 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
 ;; TODO kmail does not display my mail when run from stumpwm ?
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec kmail")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec claws-mail")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 
 ;;; Groups
 ;;; TODO can I use the CREATE macro for this?
-(loop for g in '("emacs" "irc" "browser" "email")
-     do (gnewbg g))
+
+(defparameter out (groups))
+(message "out = ~S" out)
+(message " out == ~S" (stumpwm::screen-groups (current-screen)))
+
+;; (let ((g (grouplist))
+;;       (groups '("emacs" "shell" "irc" "browser" "email") ))
+;;   (dolist (group groups)
+;;     (cond ((member (groups g)) (echo "Already a group")) ;
+;; 	  (t (echo "creating group")))))
+
+;; (loop for g in '("emacs" "shell" "irc" "browser" "email")
+;;      do (gnewbg g))
+
+;;;; Startup applications
+;; TODO have each app goto the correct group
+
+;; (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
+;;   (stumpwm:run-shell-command cmd ))
+
+
 
 
 ;; TODO is there a way to eval a line in this file like C-x e in Emacs?
