@@ -4,34 +4,46 @@
 (in-package :stumpwm)
 
 ;; TODO look at *initilizing* and *start-hook*
+;; TODO why does this message not show up in the message area?
+(echo "loading stumpwmrc...\n")
 
-(echo "loading stumpwmrc...")
+;;(setf *debug-level* 10)
 
 ;;;; Init
-(if *initializing*
-    (lamda ()
+(unless *initializing*
+    (lambda ()
 	   (mode-line)
 	   (create-groups)
-	   (start-apps)))
+	   (start-apps))
+    (echo "Already loaded.\n")) 
+
+
+;;(create-groups)
+;;(start-apps)
 
 ;;;; time
 ;; format hh:mm:ss AM/PM day mm/dd/yyyy 
-(setf *time-format-string-default* "%r %a %D")
+(setf *time-format-string-deault* "%r %a %D")
 
 ;;;; mode-line
 ;; TODO call time instead of date
+;;(setq *screen-mode-line-format* (format nil "%g~%%W"))
 (setf stumpwm:*screen-mode-line-format*
-      (list "%g | %w                | "
-	    '(:eval (stumpwm:run-shell-command "date '+%r %a %D'" t))))
+      (list "%g  | " '(:eval (stumpwm:run-shell-command "date '+%r %a %D'" t))
+	    "%W"))
 
 ;; TODO is there a better way to do this?
 ;; TODO have groups create for the following and have apps default to them:
 ;; '(emacs irc browser email)
 ;;;; Keybindings
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-c") "exec konsole")
+;; stumpwm:
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-r") "loadrc")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-m") "mode-line")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-c") "command-mode")
+;; Applications:
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
-;; TODO kmail does not display my mail when run from stumpwm ?
+;; TODO see which distro I am in
 ;;(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec claws-mail")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 1
@@ -48,7 +60,7 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch9") "exec /bin/bash ~/TestTrack.sh")
 ;; key 5
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch8") "exec eclipse")
-;; Volume
+;; Volume:
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioRaiseVolume") "exec amixer set Master,0 5%+")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioLowerVolume") "exec amixer set Master,0 5%-")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioMute") "exec amixer set Master toggle")
@@ -58,6 +70,16 @@
 
 ;; input focus is transferred to the window you focus on it
 (setf *mouse-focus-policy* :sloppy)
+
+;; Is there a better macro for this than the IF form?
+;; (unless *mode-line-click-hook*
+;;   (gnext))
+
+;; TODO why does this not work.
+;; (add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
+;; 						   (gnext)))
+
+
 
 ;; (defparameter out (groups))
 ;; (message "out = ~S" out)
@@ -71,21 +93,19 @@
 
 ;;; Groups
 ;;; TODO can I use the CREATE macro for this?
-(defun create-groups ()
+(defcommand create-groups () ()
   (loop for g in '("emacs" "shell" "irc" "browser" "email")
      do (gnewbg g)))
 
 ;; TODO have each app goto the correct group, use a pair?
-(defun start-apps ()
+(defcommand start-apps () ()
   (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
    (stumpwm:run-shell-command cmd )))
 
-;; TODO is there a way to eval a line in this file like C-x e in Emacs? _yes_ see stumpwm-mode.el
 ;; TODO have irc group flash on message
 ;; TODO check to see if we are just starting stumpwm and only eval then.
 
-;; change to stump function def
-;; (defun select-window-from-group-list ()
+;; (defcommand select-window-from-group-list ()
 ;;   ())
 
 ;; `C-t G'
