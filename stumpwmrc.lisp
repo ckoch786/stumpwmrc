@@ -43,7 +43,8 @@
 ;; Applications:
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
-;; TODO see which distro I am in
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "L") "exec xflock4")
+;; TODO kmail does not display my mail when run from stumpwm ?
 ;;(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec claws-mail")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 1
