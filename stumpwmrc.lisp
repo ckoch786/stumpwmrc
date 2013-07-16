@@ -10,6 +10,7 @@
 (defparameter compose "--compose")
 
 ;;(setf *debug-level* 10)
+;;(setf *debug-level* 1)
 
 ;;;; Init
 (unless *initializing*
@@ -25,7 +26,7 @@
 
 ;;;; time
 ;; format hh:mm:ss AM/PM day mm/dd/yyyy 
-(setf *time-format-string-deault* "%r %a %D")
+(setf *time-format-string-default* "%r %a %D")
 
 ;;;; mode-line
 ;; TODO call time instead of date
@@ -83,7 +84,6 @@
  						   (gnext)))
 
 
-
 ;; (defparameter out (groups))
 ;; (message "out = ~S" out)
 ;; (message " out == ~S" (stumpwm::screen-groups (current-screen)))
@@ -97,11 +97,13 @@
 ;;; Groups
 ;;; TODO can I use the CREATE macro for this?
 (defcommand create-groups () ()
+"Create my most used groups"
   (loop for g in '("emacs" "shell" "irc" "browser" "email")
      do (gnewbg g)))
 
 ;; TODO have each app goto the correct group, use a pair?
 (defcommand start-apps () ()
+"Start my favorite apps"
   (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
    (stumpwm:run-shell-command cmd )))
 
