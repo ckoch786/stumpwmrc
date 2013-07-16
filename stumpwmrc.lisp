@@ -5,7 +5,9 @@
 
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
-(echo "loading stumpwmrc...\n")
+;;(stumpwm:echo "loading stumpwmrc...\n")
+(defparameter mail-client "sylpheed")
+(defparameter compose "--compose")
 
 ;;(setf *debug-level* 10)
 
@@ -50,6 +52,7 @@
 ;; key 1
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch6") "exec google-chrome")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec sylpheed")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "M-XF86Mail") "compose-mail")
 ;; check for now mail
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-XF86Mail") "exec sylpheed --receive-all")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
@@ -76,9 +79,8 @@
 ;; (unless *mode-line-click-hook*
 ;;   (gnext))
 
-;; TODO why does this not work.
-;; (add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
-;; 						   (gnext)))
+(add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
+ 						   (gnext)))
 
 
 
@@ -102,6 +104,14 @@
 (defcommand start-apps () ()
   (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
    (stumpwm:run-shell-command cmd )))
+
+;; TODO if emacs is not in group emacs or if the group emacs DNE then
+;; find the instance of emacs.
+(defcommand compose-mail () ()
+"Create new message and bring emacs to the front"
+    (stumpwm:run-shell-command (concatenate 'string mail-client " " compose))
+    (gselect "emacs") ;; why does this not work?
+    (select "emacs"))
 
 ;; TODO have irc group flash on message
 ;; TODO check to see if we are just starting stumpwm and only eval then.
