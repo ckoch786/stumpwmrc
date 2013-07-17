@@ -10,13 +10,15 @@
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
 ;;(stumpwm:echo "loading stumpwmrc...\n")
-(defparameter mail-client "sylpheed")
-(defparameter compose "--compose")
+(defparameter *mail-client* "sylpheed") ;; claws-mail, kmail
+(defparameter *compose* "--compose")
+(defparameter *check-mail* "--receive-all")
 
 ;;(setf *debug-level* 10)
 ;;(setf *debug-level* 1)
 
 ;;;; Init
+;; TODO test this to make sure it works
 (unless *initializing*
     (lambda ()
 	   (mode-line)
@@ -54,14 +56,13 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "L") "exec xflock4")
-;;(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec claws-mail")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 1
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch6") "exec google-chrome")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec sylpheed")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "open-mail-client")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "M-XF86Mail") "compose-mail")
 ;; check for now mail
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-XF86Mail") "exec sylpheed --receive-all")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-XF86Mail") "check-mail")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 3
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch7") "exec xchat")
@@ -82,10 +83,7 @@
 ;; input focus is transferred to the window you focus on it
 (setf *mouse-focus-policy* :sloppy)
 
-;; Is there a better macro for this than the IF form?
-;; (unless *mode-line-click-hook*
-;;   (gnext))
-
+;;;; Hooks
 (add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
  						   (gnext)))
 
@@ -103,23 +101,32 @@
 ;;; Groups
 ;;; TODO can I use the CREATE macro for this?
 (defcommand create-groups () ()
-"Create my most used groups"
-  (loop for g in '("emacs" "shell" "irc" "browser" "email")
-     do (gnewbg g)))
+    "Create my most used groups"
+    (loop for g in '("emacs" "shell" "irc" "browser" "email")
+       do (gnewbg g)))
 
 ;; TODO have each app goto the correct group, use a pair?
 (defcommand start-apps () ()
-"Start my favorite apps"
-  (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
-   (stumpwm:run-shell-command cmd )))
+    "Start my favorite apps"
+    (dolist (cmd '("emacs" "konsole" "claws-mail" "xchat"))
+      (stumpwm:run-shell-command cmd )))
 
 ;; TODO if emacs is not in group emacs or if the group emacs DNE then
 ;; find the instance of emacs.
 (defcommand compose-mail () ()
-"Create new message and bring emacs to the front"
-    (stumpwm:run-shell-command (concatenate 'string mail-client " " compose))
+    "Create new message and bring emacs to the front"
+    (stumpwm:run-shell-command (concatenate 'string *mail-client* " " *compose*))
     (gselect "emacs") ;; why does this not work?
     (select "emacs"))
+
+;;TODO determine my main mail client and select that one
+(defcommand open-mail-client ()()
+    "Open my mail client"
+    (stumpwm:run-shell-command *mail-client*))
+
+(defcommand check-mail ()()
+    "Check my mail"
+    (stumpwm:run-shell-command (concatenate 'string *mail-client* " " *check-mail*)))
 
 ;; TODO have irc group flash on message
 ;; TODO check to see if we are just starting stumpwm and only eval then.
