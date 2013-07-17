@@ -1,4 +1,8 @@
-;; -*-mode: lisp;-*-
+;; Local Variables
+;; mode: lisp
+;; eval: (stumpwm-mode)
+;; End:
+
 ;;;; CKoch's stumpwmrc
 
 (in-package :stumpwm)
@@ -43,11 +47,13 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-r") "loadrc")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-m") "mode-line")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-c") "command-mode")
+;; TODO for floating group find a way to get the window count and the numbers
+;; associated with each window, then have C-TAB cycle through the windows
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-TAB") "next")
 ;; Applications:
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "L") "exec xflock4")
-;; TODO kmail does not display my mail when run from stumpwm ?
 ;;(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "exec claws-mail")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 1
