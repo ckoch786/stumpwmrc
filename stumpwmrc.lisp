@@ -116,8 +116,8 @@
 (defcommand compose-mail () ()
     "Create new message and bring emacs to the front"
     (stumpwm:run-shell-command (concatenate 'string *mail-client* " " *compose*))
-    (gselect "emacs") ;; why does this not work?
-    (select "emacs"))
+    (gselect(select-group (current-screen) "emacs"))
+    (select-window "emacs"))
 
 ;;TODO determine my main mail client and select that one
 (defcommand open-mail-client ()()
@@ -139,3 +139,76 @@
 ;;      see *note Groups::.
 ;; `C-t g "'
 ;;      Select a group from a list and switch to it.
+
+
+;; Error In Command 'compose-mail': There is no applicable method for the generic function
+;;                                               #<STANDARD-GENERIC-FUNCTION
+;;                                                 STUMPWM::GROUP-SCREEN (1)>
+;;                                             when called with arguments
+;;                                               (2).
+;; StumpWM Crashed With An Unhandled Error!
+;; Copy the error to the clipboard with the 'copy-unhandled-error' command.
+;; Interactive interrupt at #x7FFFF73FD158.
+;; 0: (SB-DEBUG::MAP-BACKTRACE
+;;     #<CLOSURE (LAMBDA # :IN SB-DEBUG:BACKTRACE) {100470056B}>
+;;     :START
+;;     0
+;;     :COUNT
+;;     100)
+;; 1: (SB-DEBUG:BACKTRACE 100 #<SB-IMPL::STRING-OUTPUT-STREAM {1004700463}>)
+;; 2: (STUMPWM::BACKTRACE-STRING)
+;; 3: (STUMPWM::PERFORM-TOP-LEVEL-ERROR-ACTION
+;;     #<SB-SYS:INTERACTIVE-INTERRUPT {1004700143}>)
+;; 4: (SIGNAL #<SB-SYS:INTERACTIVE-INTERRUPT {1004700143}>)
+;; 5: ((FLET SB-UNIX::INTERRUPT-IT :IN SB-UNIX::SIGINT-HANDLER))
+;; 6: ((FLET #:WITHOUT-INTERRUPTS-BODY-238379 :IN SB-THREAD:INTERRUPT-THREAD))
+;; 7: ((FLET #:WITHOUT-INTERRUPTS-BODY-26790 :IN SB-SYS:INVOKE-INTERRUPTION))
+;; 8: ((FLET SB-THREAD::EXEC :IN SB-SYS:INVOKE-INTERRUPTION))
+;; 9: ((FLET #:WITHOUT-INTERRUPTS-BODY-26779 :IN SB-SYS:INVOKE-INTERRUPTION))
+;; 10: (SB-SYS:INVOKE-INTERRUPTION
+;;      #<CLOSURE (FLET SB-UNIX::INTERRUPTION :IN SB-SYS:ENABLE-INTERRUPT)
+;;        {7FFFF70CE86B}>)
+;; 11: (SB-SYS:INVOKE-INTERRUPTION
+;;      #<CLOSURE (FLET SB-UNIX::INTERRUPTION :IN SB-SYS:ENABLE-INTERRUPT)
+;;        {7FFFF70CE86B}>)[:EXTERNAL]
+;; 12: ((FLET SB-UNIX::RUN-HANDLER :IN SB-SYS:ENABLE-INTERRUPT)
+;;      13
+;;      #.(SB-SYS:INT-SAP #X7FFFF70CEB70)
+;;      #.(SB-SYS:INT-SAP #X7FFFF70CEA40))
+;; 13: ("foreign function: call_into_lisp")
+;; 14: ("foreign function: funcall3")
+;; 15: ("foreign function: interrupt_handle_now")
+;; 16: ("foreign function: #x413BCE")
+;; 17: ("bogus stack frame")
+;; 18: (SB-SYS:WAIT-UNTIL-FD-USABLE 5 :INPUT 59 T)
+;; 19: (XLIB::BUFFER-INPUT-WAIT-DEFAULT
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      59)
+;; 20: (XLIB::BUFFER-INPUT-WAIT
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      59)
+;; 21: (XLIB::READ-INPUT
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      59
+;;      NIL
+;;      #<FUNCTION (LAMBDA # :IN XLIB::WAIT-FOR-EVENT) {100257A9BB}>
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>)
+;; 22: (XLIB::WAIT-FOR-EVENT
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      59
+;;      NIL)
+;; 23: ((FLET SB-THREAD::WITH-RECURSIVE-LOCK-THUNK :IN XLIB:EVENT-LISTEN))
+;; 24: ((FLET #:WITHOUT-INTERRUPTS-BODY-88907 :IN SB-THREAD::CALL-WITH-RECURSIVE-LOCK))
+;; 25: (SB-THREAD::CALL-WITH-RECURSIVE-LOCK
+;;      #<CLOSURE (FLET SB-THREAD::WITH-RECURSIVE-LOCK-THUNK :IN XLIB:EVENT-LISTEN)
+;;        {7FFFF70CF65B}>
+;;      #<SB-THREAD:MUTEX "CLX Event Lock"
+;;          owner: #<SB-THREAD:THREAD "initial thread" RUNNING {1003B48DA3}>>)
+;; 26: ((FLET SB-IMPL::TIMEOUT-BODY :IN XLIB:EVENT-LISTEN))
+;; 27: (XLIB:EVENT-LISTEN #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)> 59)
+;; 28: (STUMPWM::STUMPWM-INTERNAL-LOOP)
+;; 29: (STUMPWM::STUMPWM-INTERNAL ":0")
+;; 30: (STUMPWM ":0")
+;; 31: ((LAMBDA () :IN "/home/ckoch/repos/stumpwm/make-image.lisp"))
+;; 32: ((FLET #:WITHOUT-INTERRUPTS-BODY-236480 :IN SB-EXT:SAVE-LISP-AND-DIE))
+;; 33: ((LABELS SB-IMPL::RESTART-LISP :IN SB-EXT:SAVE-LISP-AND-DIE))
