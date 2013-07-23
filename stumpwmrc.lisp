@@ -56,32 +56,32 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "L") "exec xflock4")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
 ;; key 1
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch6") "exec google-chrome")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Mail") "open-mail-client")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "M-XF86Mail") "compose-mail")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Launch6") "exec google-chrome")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Mail") "open-mail-client")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "M-XF86Mail") "compose-mail")
 ;; check for now mail
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-XF86Mail") "check-mail")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "C-XF86Mail") "check-mail")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Favorites") "exec synapse")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Search") "exec google-chrome http://www.jetbrains.com/idea/webhelp/getting-help.html")
 ;; key 3
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch7") "exec xchat")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Launch7") "exec xchat")
 ;; Open timesheet
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Calculator") "exec libreoffice /home/ckoch/Dropbox/time_sheet")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Calculator") "exec libreoffice /home/ckoch/Dropbox/time_sheet")
 ;; key 4
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch9") "exec /bin/bash ~/TestTrack.sh")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Launch9") "exec /bin/bash ~/TestTrack.sh")
 ;; key 5
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86Launch8") "exec eclipse")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Launch8") "exec eclipse")
 ;; Volume:
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioRaiseVolume") "exec amixer set Master,0 5%+")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioLowerVolume") "exec amixer set Master,0 5%-")
-(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "XF86AudioMute") "exec amixer set Master toggle")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioRaiseVolume") "exec amixer set Master,0 5%+")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioLowerVolume") "exec amixer set Master,0 5%-")
+(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioMute") "exec amixer set Master toggle")
 
 ;;(stumpwm:define-key stumpwm:*root-click-hook* (stumpwm:mouse "mouse-1") (gnext))
 ;; TODO make it easier to transfer windows to groups
 
 ;; input focus is transferred to the window you focus on it
-(setf *mouse-focus-policy* :sloppy)
+(setf *mouse-focus-policy* :click) ; :sloppy, :click, :ignore
 
 ;;;; Hooks
 (add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
