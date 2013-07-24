@@ -56,6 +56,7 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "c") "exec konsole")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "b") "exec firefox")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "L") "exec xflock4")
+(stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-XF86Favorites") "fake-out-intelij")
 ;; key 1
 (stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Launch6") "exec google-chrome")
 (stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86Mail") "open-mail-client")
@@ -76,6 +77,7 @@
 (stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioRaiseVolume") "exec amixer set Master,0 5%+")
 (stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioLowerVolume") "exec amixer set Master,0 5%-")
 (stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "XF86AudioMute") "exec amixer set Master toggle")
+;;(stumpwm:define-key stumpwm:*top-map* (stumpwm:kbd "Menu") "fake-out-intelij")
 
 ;;(stumpwm:define-key stumpwm:*root-click-hook* (stumpwm:mouse "mouse-1") (gnext))
 ;; TODO make it easier to transfer windows to groups
@@ -127,6 +129,16 @@
 (defcommand check-mail ()()
     "Check my mail"
     (stumpwm:run-shell-command (concatenate 'string *mail-client* " " *check-mail*)))
+
+(defcommand fake-out-intelij ()()
+  "Send the right click to the code editor window then click to activate the cursor
+Precondition: Intelij is fully expanded. 
+Assumption: That 800x800 is about the middle of your screen"
+  (banish-pointer)
+  (ratrelwarp -800 -800)
+  (ratclick 3);; right click to enable menu
+  (ratclick)) ;; left click to disable menu
+
 
 ;; TODO have irc group flash on message
 ;; TODO check to see if we are just starting stumpwm and only eval then.
