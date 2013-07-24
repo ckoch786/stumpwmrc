@@ -10,7 +10,7 @@
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
 ;;(stumpwm:echo "loading stumpwmrc...\n")
-(defparameter *mail-client* "sylpheed") ;; claws-mail, kmail
+(defparameter *mail-client* "claws-mail") ;; claws-mail, kmail, sylpheed
 (defparameter *compose* "--compose")
 (defparameter *check-mail* "--receive-all")
 
@@ -86,8 +86,10 @@
 (setf *mouse-focus-policy* :click) ; :sloppy, :click, :ignore
 
 ;;;; Hooks
-(add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
- 						   (gnext)))
+;; Fix this, this does some weird infinite looping over all the groups when
+;; stumpwm has been running for a while.
+;; (add-hook *mode-line-click-hook* (lambda (m-line button-clicked x-ptr f-ptr)
+;;  						   (gnext)))
 
 
 ;; (defparameter out (groups))
