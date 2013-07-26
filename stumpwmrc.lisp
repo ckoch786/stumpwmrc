@@ -7,9 +7,9 @@
 
 (in-package :stumpwm)
 
-
+;; TODO checkout http://lisp-search.acceleration.net/html/index.html
 ;; change the prefix key to something else
-(set-prefix-key (kbd "C-e"))
+(set-prefix-key (kbd "C-u"))
 
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
