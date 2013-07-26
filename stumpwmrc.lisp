@@ -7,6 +7,10 @@
 
 (in-package :stumpwm)
 
+
+;; change the prefix key to something else
+(set-prefix-key (kbd "C-e"))
+
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
 ;;(stumpwm:echo "loading stumpwmrc...\n")
@@ -83,7 +87,7 @@
 ;; TODO make it easier to transfer windows to groups
 
 ;; input focus is transferred to the window you focus on it
-(setf *mouse-focus-policy* :click) ; :sloppy, :click, :ignore
+(setf *mouse-focus-policy* :ignore) ; :sloppy, :click, :ignore
 
 ;;;; Hooks
 ;; Fix this, this does some weird infinite looping over all the groups when
