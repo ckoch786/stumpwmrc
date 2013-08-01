@@ -30,7 +30,6 @@
       (start-apps))
     (echo "Already loaded.\n")) 
 
-https://github.com/ckoch786/stumpwmrc
 ;;(create-groups)
 ;;(start-apps)
 
