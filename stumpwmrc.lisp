@@ -9,7 +9,7 @@
 
 ;; TODO checkout http://lisp-search.acceleration.net/html/index.html
 ;; change the prefix key to something else
-(set-prefix-key (kbd "C-u"))
+(set-prefix-key (kbd "C-t"))
 
 ;; TODO look at *initilizing* and *start-hook*
 ;; TODO why does this message not show up in the message area?
@@ -23,14 +23,14 @@
 
 ;;;; Init
 ;; TODO test this to make sure it works
-(unless *initializing*
-    (lambda ()
-	   (mode-line)
-	   (create-groups)
-	   (start-apps))
+(if *initializing*
+    (progn
+      (mode-line)
+      (create-groups)
+      (start-apps))
     (echo "Already loaded.\n")) 
 
-
+https://github.com/ckoch786/stumpwmrc
 ;;(create-groups)
 ;;(start-apps)
 
@@ -53,6 +53,7 @@
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-r") "loadrc")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-m") "mode-line")
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-c") "command-mode")
+(stumpwm:undefine-key stumpwm:*root-map* (stumpwm:kbd "C-SPC"))
 ;; TODO for floating group find a way to get the window count and the numbers
 ;; associated with each window, then have C-TAB cycle through the windows
 (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-TAB") "next")
@@ -87,7 +88,7 @@
 ;; TODO make it easier to transfer windows to groups
 
 ;; input focus is transferred to the window you focus on it
-(setf *mouse-focus-policy* :ignore) ; :sloppy, :click, :ignore
+(setf *mouse-focus-policy* :sloppy) ; :sloppy, :click, :ignorep
 
 ;;;; Hooks
 ;; Fix this, this does some weird infinite looping over all the groups when
@@ -145,6 +146,42 @@ Assumption: That 800x800 is about the middle of your screen"
   (ratclick 3);; right click to enable menu
   (ratclick)) ;; left click to disable menu
 
+
+;; (defun select-window-from-group-list-menu (windows fmt)
+;;   "Allow the user to select a window from the list passed in @var{windows}.  The
+;; @var{fmt} argument specifies the window formatting used.  Returns the window
+;; selected."
+;;   (second (select-from-menu (current-screen)
+;; 			    (mapcar (lambda (w)
+;; 				      (list (format-expand *window-formatters* fmt w) w))
+;;                                     windows)
+;;                             nil
+;;                             (or (position (current-window) windows) 0))))
+
+
+
+;; (defcommand windowlist (&optional (fmt *window-format*)) (:rest)
+;; "Allow the user to Select a window from the list of windows and focus
+;; the selected window. For information of menu bindings
+;; @xref{Menus}. The optional argument @var{fmt} can be specified to
+;; override the default window formatting."
+;;   (if (null (group-windows (current-group)))
+;;       (message "No Managed Windows")
+;;       (let* ((group (current-group))
+;;              (window (select-window-from-menu (sort-windows group) fmt)))
+;;         (if window
+;;             (group-focus-window group window)
+;;             (throw 'error :abort)))))
+
+
+
+;; (defcommand vgroups (&optional gfmt wfmt) (:string :rest)
+;; "Like @command{groups} but also display the windows in each group. The
+;; optional arguments @var{gfmt} and @var{wfmt} can be used to override
+;; the default group formatting and window formatting, respectively."
+;;   (echo-groups (current-screen)
+;;                (or gfmt *group-format*)
+;;                t (or wfmt *window-format*)))
 
 ;; TODO have irc group flash on message
 ;; TODO check to see if we are just starting stumpwm and only eval then.
@@ -230,3 +267,66 @@ Assumption: That 800x800 is about the middle of your screen"
 ;; 31: ((LAMBDA () :IN "/home/ckoch/repos/stumpwm/make-image.lisp"))
 ;; 32: ((FLET #:WITHOUT-INTERRUPTS-BODY-236480 :IN SB-EXT:SAVE-LISP-AND-DIE))
 ;; 33: ((LABELS SB-IMPL::RESTART-LISP :IN SB-EXT:SAVE-LISP-AND-DIE))
+
+;;;; Got this error twice when opening Idea
+;; The slot STUMPWM::GROUP is unbound in the object #S(WINDOW " " #x280004E).
+;; 0: (SB-DEBUG::MAP-BACKTRACE
+;;     #<CLOSURE (LAMBDA # :IN SB-DEBUG:BACKTRACE) {1006ECA2CB}>
+;;     :START
+;;     0
+;;     :COUNT
+;;     100)
+;; 1: (SB-DEBUG:BACKTRACE 100 #<SB-IMPL::STRING-OUTPUT-STREAM {1006ECA1C3}>)
+;; 2: (STUMPWM::BACKTRACE-STRING)
+;; 3: (STUMPWM::PERFORM-TOP-LEVEL-ERROR-ACTION #<UNBOUND-SLOT GROUP {1006EC9C33}>)
+;; 4: (SIGNAL #<UNBOUND-SLOT GROUP {1006EC9C33}>)
+;; 5: (ERROR #<UNBOUND-SLOT GROUP {1006EC9C33}>)
+;; 6: ((SB-PCL::FAST-METHOD SLOT-UNBOUND (T T T))
+;;     #<unavailable argument>
+;;     #<unavailable argument>
+;;     #<unavailable argument>
+;;     #S(WINDOW " " #x280004E)
+;;     STUMPWM::GROUP)
+;; 7: (SB-PCL::SLOT-UNBOUND-INTERNAL #S(WINDOW " " #x280004E) 6)
+;; 8: (STUMPWM::WINDOW-SCREEN #S(WINDOW " " #x280004E))
+;; 9: (STUMPWM::DESTROY-WINDOW #S(WINDOW " " #x280004E))
+;; 10: (STUMPWM::HANDLE-EVENT
+;;      :DISPLAY
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      :EVENT-KEY
+;;      :DESTROY-NOTIFY
+;;      :EVENT-CODE
+;;      17
+;;      :SEND-EVENT-P
+;;      NIL
+;;      :SEQUENCE
+;;      52932
+;;      :EVENT-WINDOW
+;;      #<XLIB:WINDOW :0 170>
+;;      :WINDOW
+;;      #<XLIB:WINDOW :0 280004E>)
+;; 11: ((FLET SB-THREAD::WITH-RECURSIVE-LOCK-THUNK :IN XLIB:PROCESS-EVENT))
+;; 12: ((FLET #:WITHOUT-INTERRUPTS-BODY-88907 :IN SB-THREAD::CALL-WITH-RECURSIVE-LOCK))
+;; 13: (SB-THREAD::CALL-WITH-RECURSIVE-LOCK
+;;      #<CLOSURE (FLET SB-THREAD::WITH-RECURSIVE-LOCK-THUNK :IN XLIB:PROCESS-EVENT)
+;;        {7FFFF70CF83B}>
+;;      #<SB-THREAD:MUTEX "CLX Event Lock"
+;;          owner: #<SB-THREAD:THREAD "initial thread" RUNNING {1003B48DA3}>>)
+;; 14: (XLIB:PROCESS-EVENT
+;;      #<XLIB:DISPLAY :0 (The X.Org Foundation R11304000)>
+;;      :HANDLER
+;;      #<FUNCTION STUMPWM::HANDLE-EVENT>
+;;      :TIMEOUT
+;;      NIL
+;;      :PEEK-P
+;;      NIL
+;;      :DISCARD-P
+;;      NIL
+;;      :FORCE-OUTPUT-P
+;;      T)
+;; 15: (STUMPWM::STUMPWM-INTERNAL-LOOP)
+;; 16: (STUMPWM::STUMPWM-INTERNAL ":0")
+;; 17: (STUMPWM ":0")
+;; 18: ((LAMBDA () :IN "/home/ckoch/repos/stumpwm/make-image.lisp"))
+;; 19: ((FLET #:WITHOUT-INTERRUPTS-BODY-236480 :IN SB-EXT:SAVE-LISP-AND-DIE))
+;; 20: ((LABELS SB-IMPL::RESTART-LISP :IN SB-EXT:SAVE-LISP-AND-DIE))
